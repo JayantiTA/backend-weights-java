@@ -1,11 +1,14 @@
 package com.example.backend.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.ObjectError;
 
 import com.example.backend.api.WeightAPI;
 import com.example.backend.api.model.CreateRequest;
@@ -90,9 +93,15 @@ public class WeightController implements WeightAPI {
     }
 
     @Override
-    public ResponseEntity<CreateUpdateResponse> createWeight(CreateRequest createRequest) {
+    public ResponseEntity<CreateUpdateResponse> createWeight(CreateRequest createRequest, BindingResult bindingResult) {
         CreateUpdateResponse createUpdateResponse = new CreateUpdateResponse();
         WeightDO savedWeight = new WeightDO();
+
+        if (bindingResult.hasErrors()) {
+            ObjectError error = bindingResult.getAllErrors().get(0);
+            createUpdateResponse.setMessage(error.getDefaultMessage());
+            return new ResponseEntity<CreateUpdateResponse>(createUpdateResponse, null, HttpStatus.BAD_REQUEST);
+        }
 
         try {
             savedWeight = weightService.createWeight(convertWeightRequestToWeightDto(createRequest));
@@ -112,9 +121,15 @@ public class WeightController implements WeightAPI {
     }
 
     @Override
-    public ResponseEntity<CreateUpdateResponse> updateWeight(UpdateRequest updateRequest) {
+    public ResponseEntity<CreateUpdateResponse> updateWeight(UpdateRequest updateRequest, BindingResult bindingResult) {
         CreateUpdateResponse createUpdateResponse = new CreateUpdateResponse();
         WeightDO savedWeight = new WeightDO();
+
+        if (bindingResult.hasErrors()) {
+            ObjectError error = bindingResult.getAllErrors().get(0);
+            createUpdateResponse.setMessage(error.getDefaultMessage());
+            return new ResponseEntity<CreateUpdateResponse>(createUpdateResponse, null, HttpStatus.BAD_REQUEST);
+        }
 
         try {
             savedWeight = weightService.updateWeight(updateRequest.getId(), convertWeightRequestToWeightDto(updateRequest));
@@ -136,16 +151,20 @@ public class WeightController implements WeightAPI {
     @Override
     public ResponseEntity<DeleteResponse> deleteWeight(DeleteRequest deleteRequest) {
         DeleteResponse deleteResponse = new DeleteResponse();
+        String message = "";
 
         try {
-            weightService.deleteWeight(deleteRequest.getId());
+            message = weightService.deleteWeight(deleteRequest.getId());
         } catch (Exception e) {
             log.error("Failed to delete weight", e);
             deleteResponse.setMessage("Failed to delete weight");
             return new ResponseEntity<DeleteResponse>(deleteResponse, null, HttpStatus.NOT_FOUND);
         }
 
-        deleteResponse.setMessage("Success");
+        deleteResponse.setMessage(message);
+        if (!message.equals("Success")) {
+            return new ResponseEntity<DeleteResponse>(deleteResponse, null, HttpStatus.NOT_FOUND);
+        }
         return new ResponseEntity<DeleteResponse>(deleteResponse, null, HttpStatus.OK);
     }
 

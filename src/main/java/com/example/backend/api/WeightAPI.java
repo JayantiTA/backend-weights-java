@@ -3,6 +3,7 @@ package com.example.backend.api;
 import javax.validation.Valid;
 
 import org.springframework.http.ResponseEntity;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -39,13 +40,13 @@ public interface WeightAPI {
     @PostMapping("/weights")
     @ResponseBody
     ResponseEntity<CreateUpdateResponse> createWeight(
-        @RequestBody @Valid CreateRequest createRequest
+        @RequestBody @Valid CreateRequest createRequest, BindingResult bindingResult
     );
 
     @PutMapping("/weights")
     @ResponseBody
     ResponseEntity<CreateUpdateResponse> updateWeight(
-        @RequestBody @Valid UpdateRequest updateRequest
+        @RequestBody @Valid UpdateRequest updateRequest, BindingResult bindingResult
     );
 
     @DeleteMapping("/weights")
