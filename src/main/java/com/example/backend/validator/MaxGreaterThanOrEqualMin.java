@@ -14,7 +14,6 @@ public @interface MaxGreaterThanOrEqualMin {
     Class<?>[] groups() default {};
     Class<? extends Payload>[] payload() default {};
 
-
     // Add an attribute to specify the DTO classes that should be validated
     Class<?>[] value();
 }

@@ -1,6 +1,5 @@
 package com.example.backend.controller;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -181,7 +180,6 @@ public class WeightController implements WeightAPI {
         WeightDTO weightDto = new WeightDTO();
 
         if (weightRequest.getDate() != null) {
-            // weightDto.setDate(Converter.convertDate(weightRequest.getDate()));
             weightDto.setDate(weightRequest.getDate().atStartOfDay());
         }
 
