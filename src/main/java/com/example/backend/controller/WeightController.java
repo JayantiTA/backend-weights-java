@@ -74,7 +74,7 @@ public class WeightController implements WeightAPI {
         WeightDO weightDo = new WeightDO();
 
         try {
-            weightDo = weightService.getWeightByDate(Converter.convertDate(date));
+            weightDo = weightService.getWeightByDate(Converter.stringToDate(date));
         } catch (Exception e) {
             log.error("Failed to get weight", e);
             getWeightResponse.setMessage("Failed to get weight");
@@ -198,7 +198,7 @@ public class WeightController implements WeightAPI {
         WeightDTO weightDto = new WeightDTO();
 
         if (weightRequest.getDate() != null) {
-            weightDto.setDate(Converter.convertDate(weightRequest.getDate()));
+            weightDto.setDate(Converter.stringToDate(weightRequest.getDate()));
         }
 
         if (weightRequest.getMax() != null) {

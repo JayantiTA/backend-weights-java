@@ -1,5 +1,6 @@
 package com.example.backend.dao.entity;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 import javax.persistence.Entity;
@@ -16,11 +17,11 @@ import lombok.Data;
 @Data
 @Table(name = "weights")
 @DynamicUpdate
-public class WeightDO {
+public class WeightDO implements Serializable {
     @Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	private LocalDateTime date;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
+    private LocalDateTime date;
     private Integer max;
     private Integer min;
 }

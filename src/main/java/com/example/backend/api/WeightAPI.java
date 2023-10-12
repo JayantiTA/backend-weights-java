@@ -11,47 +11,44 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.example.backend.api.model.CreateRequest;
 import com.example.backend.api.model.CreateUpdateResponse;
 import com.example.backend.api.model.DeleteRequest;
 import com.example.backend.api.model.DeleteResponse;
+import com.example.backend.api.model.GetWeightResponse;
 import com.example.backend.api.model.GetWeightsResponse;
 import com.example.backend.api.model.UpdateRequest;
-import com.example.backend.api.model.GetWeightResponse;
-
 
 @RequestMapping(path = "api")
 public interface WeightAPI {
-    
+
     @GetMapping("/weights")
     @ResponseBody
     ResponseEntity<GetWeightsResponse> getWeights();
 
-    @GetMapping("/weights/{id}")
+    @GetMapping("/weight/{id}")
     @ResponseBody
     ResponseEntity<GetWeightResponse> getWeightById(@PathVariable Integer id);
 
-    @GetMapping("/weights/{date}")
+    @GetMapping("/weight")
     @ResponseBody
-    ResponseEntity<GetWeightResponse> getWeightByDate(@PathVariable String date);
-    
+    ResponseEntity<GetWeightResponse> getWeightByDate(@RequestParam(name = "date") String date);
+
     @PostMapping("/weights")
     @ResponseBody
     ResponseEntity<CreateUpdateResponse> createWeight(
-        @RequestBody @Valid CreateRequest createRequest, BindingResult bindingResult
-    );
+            @RequestBody @Valid CreateRequest createRequest, BindingResult bindingResult);
 
     @PutMapping("/weights")
     @ResponseBody
     ResponseEntity<CreateUpdateResponse> updateWeight(
-        @RequestBody @Valid UpdateRequest updateRequest, BindingResult bindingResult
-    );
+            @RequestBody @Valid UpdateRequest updateRequest, BindingResult bindingResult);
 
     @DeleteMapping("/weights")
     @ResponseBody
     ResponseEntity<DeleteResponse> deleteWeight(
-        @RequestBody DeleteRequest deleteRequest
-    );
+            @RequestBody DeleteRequest deleteRequest);
 }
